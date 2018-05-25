@@ -7,17 +7,17 @@ import groovy.json.*
 
 class RemoveModulePropertiesTest extends Specification {
     def 'removeModulePropertiesTest'() {
-        setup:
+        given:
         def baseurl = 'http://localhost:8088/artifactory'
         def artifactory = ArtifactoryClientBuilder.create().setUrl(baseurl)
             .setUsername('admin').setPassword('password').build()
 
-        def file = new File('./src/test/groovy/RemoveModulePropertiesTest/build.json')
+        def buildInfoFile = new File('build/removeModuleDependencies/test/build.json')
 
         ArtifactoryRequest uploadBuild = new ArtifactoryRequestImpl().apiUrl("api/build")
           .method(ArtifactoryRequest.Method.PUT)
           .requestType(ArtifactoryRequest.ContentType.JSON)
-          .requestBody(new JsonSlurper().parse(file))
+          .requestBody(new JsonSlurper().parse(buildInfoFile))
         artifactory.restCall(uploadBuild)
 
         when:
